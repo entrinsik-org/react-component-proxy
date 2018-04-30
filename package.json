@@ -1,6 +1,6 @@
 {
   "name": "react-component-proxy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Dynamic component rendering for server-bound controls",
   "author": "entrinsik-org",
   "license": "MIT",
@@ -18,7 +18,9 @@
     "deploy": "gh-pages -d example/build"
   },
   "dependencies": {
-    "react-fetch-component": "^5.4.1"
+    "lodash": "^4.17.10",
+    "react-fetch-component": "^5.4.1",
+    "urijs": "^1.19.1"
   },
   "peerDependencies": {
     "prop-types": "^15.5.4",
@@ -35,6 +37,7 @@
     "cross-env": "^5.1.4",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.3",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
     "eslint-config-standard-react": "^6.0.0",

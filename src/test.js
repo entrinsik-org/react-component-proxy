@@ -1,6 +1,7 @@
 import React from 'react';
 import ComponentProvider, { component, bind, proxy } from './';
 import { shallow, mount } from 'enzyme';
+import renderToJson from 'enzyme-to-json';
 
 describe('ComponentProvider', () => {
   it('is truthy', () => {
@@ -97,6 +98,21 @@ describe('ComponentProvider', () => {
         <RemoteHello greeting="Hi" first="Brad" last="Leupen" />
       );
       expect(empty.html()).toEqual('');
+    });
+
+    it('should fetch the remote component', async () => {
+      fetch.mockResponse(
+        JSON.stringify({
+          hello: { greeting: 'Hi', first: 'Brad', last: 'Leupen' }
+        })
+      );
+
+      const component = mount(
+        <RemoteHello greeting="Hi" first="Brad" last="Leupen" />
+      );
+
+      await Promise.all(component.find('Fetch').instance().promises);
+      expect(component.html()).toEqual('<span>Hi, Brad Leupen</span>');
     });
   });
 });

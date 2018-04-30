@@ -1,13 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import ExampleComponent from 'react-component-proxy'
+import { bind, proxy } from 'react-component-proxy';
+
+bind('highchart', props => <div>{JSON.stringify(props)}</div>);
+
+const Trend = proxy('http://localhost:3002/v/trend.json{?dataset,chartType,interval,x}')
 
 export default class App extends Component {
-  render () {
+  render() {
     return (
-      <div>
-        <ExampleComponent text='Modern React component module' />
-      </div>
-    )
+      <Trend dataset="admin:northwind-orders" x="OrderDate" interval="month" chartType="column" />
+    );
   }
 }

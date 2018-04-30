@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
-import Fetch from "react-fetch-component";
-import URITemplate from "urijs/src/URITemplate";
-import _ from "lodash";
+import React, { PureComponent } from 'react';
+import Fetch from 'react-fetch-component';
+import URITemplate from 'urijs/src/URITemplate';
+import _ from 'lodash';
 
 /**
  * Provides support for late-bound components that may be served up from the server. Components
@@ -29,6 +29,11 @@ import _ from "lodash";
 const components = {};
 
 const ComponentContext = React.createContext(components);
+
+function forwardRef(callback) {
+  return React.forwardRef(callback);
+  // return props => callback(props);
+}
 
 /**
  * Converts a component id into a react component id
@@ -73,7 +78,7 @@ class ComponentWrapper extends PureComponent {
   render() {
     const { components, component, ...props } = this.props;
     const Component = components[component];
-    if (!Component) throw new Error("No component bound to name: " + component);
+    if (!Component) throw new Error('No component bound to name: ' + component);
 
     return <Component {...props} />;
   }
@@ -94,7 +99,7 @@ class ComponentWrapper extends PureComponent {
 function component(config, model) {
   const [component, defaults] = parseConfig(config, model);
 
-  return React.forwardRef((props, ref) => {
+  return forwardRef((props, ref) => {
     return (
       <ComponentContext.Consumer>
         {components => (
@@ -139,7 +144,7 @@ function proxy(uri, params) {
       .value();
   }
 
-  const Component = React.forwardRef((props, ref) => {
+  const Component = forwardRef((props, ref) => {
     const { children = () => null } = props;
 
     const params = configureParams(props);
@@ -170,8 +175,10 @@ function proxy(uri, params) {
     };
 
     return (
-      <Fetch src={href} ref={ref}>
-        {({ data, ...other }) => (data ? render(data) : children(other))}
+      <Fetch url={href} ref={ref} as="json">
+        {({ data, ...other }) => {
+          return data ? render(data) : children(other);
+        }}
       </Fetch>
     );
   });
@@ -190,7 +197,7 @@ export default function ComponentProvider({ components, children }) {
 }
 
 function withComponents(Component) {
-  return React.forwardRef((props, ref) => (
+  return forwardRef((props, ref) => (
     <ComponentContext.Consumer>
       {components => <Component components={components} {...props} ref={ref} />}
     </ComponentContext.Consumer>
