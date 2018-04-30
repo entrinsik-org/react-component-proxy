@@ -12,11 +12,13 @@ export default {
   output: [
     {
       file: pkg.main,
-      format: 'cjs'
+      format: 'cjs',
+      exports: 'named'
     },
     {
       file: pkg.module,
-      format: 'es'
+      format: 'es',
+      exports: 'named'
     }
   ],
   plugins: [
