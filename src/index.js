@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import Fetch from 'react-fetch-component';
 import URITemplate from 'urijs/src/URITemplate';
+import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 /**
@@ -31,8 +32,8 @@ const components = {};
 const ComponentContext = React.createContext(components);
 
 function forwardRef(callback) {
-  return React.forwardRef(callback);
-  // return props => callback(props);
+  // return React.forwardRef(callback);
+  return props => callback(props);
 }
 
 /**
@@ -71,10 +72,6 @@ function parseConfig(config, props = {}) {
  * A component wrapper for dynamically bound components
  */
 class ComponentWrapper extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { components, component, ...props } = this.props;
     const Component = components[component];
@@ -83,6 +80,11 @@ class ComponentWrapper extends PureComponent {
     return <Component {...props} />;
   }
 }
+
+ComponentWrapper.propTypes = {
+  components: PropTypes.object,
+  component: PropTypes.string
+};
 
 /**
  * Creates a new dynamic component instance.
@@ -196,6 +198,11 @@ export default function ComponentProvider({ components, children }) {
   );
 }
 
+ComponentProvider.propTypes = {
+  components: PropTypes.object,
+  children: PropTypes.node
+};
+
 function withComponents(Component) {
   return forwardRef((props, ref) => (
     <ComponentContext.Consumer>
@@ -207,6 +214,10 @@ function withComponents(Component) {
 function ComponentConsumer({ render }) {
   return <ComponentContext.Consumer>{render}</ComponentContext.Consumer>;
 }
+
+ComponentConsumer.propTypes = {
+  render: PropTypes.func
+};
 
 export {
   bind,

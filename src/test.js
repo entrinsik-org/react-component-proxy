@@ -1,5 +1,5 @@
 import React from 'react';
-import ComponentProvider, { component, bind, proxy } from './';
+import ComponentProvider, { component, bind, proxy } from './index';
 import { shallow, mount } from 'enzyme';
 import renderToJson from 'enzyme-to-json';
 
