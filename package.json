@@ -1,6 +1,6 @@
 {
   "name": "react-component-proxy",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Dynamic component rendering for server-bound controls",
   "author": "entrinsik-org",
   "license": "MIT",
